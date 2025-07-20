@@ -4,7 +4,6 @@ import fs from "fs-extra";
 import { graphqlHTTP } from "express-graphql";
 import { schema, createResolvers } from "./graphql.js";
 import rateLimit from "express-rate-limit";
-
 import { normalizeSections } from "./lib/normalizeSections.js";
 
 const app = express();
@@ -49,6 +48,22 @@ app.get("/api/:versi/:kitab", (req, res) => {
       if (!kitabData)
             return res.status(404).json({ error: "Kitab tidak ditemukan" });
       res.json(Object.keys(kitabData));
+});
+
+app.get("/api/section", (req, res) => {
+      const { versi, section } = req.query;
+      if (!versi || !section) {
+            return res.status(400).json({
+                  error: "Parameter ?versi= dan ?section= diperlukan",
+            });
+      }
+
+      if (!DATA[versi]) {
+            return res.status(404).json({ error: "Versi tidak ditemukan" });
+      }
+
+      const hasil = getAyatBySection({ [versi]: DATA[versi] }, section);
+      res.json(hasil);
 });
 
 // GET ayat dalam pasal tertentu
