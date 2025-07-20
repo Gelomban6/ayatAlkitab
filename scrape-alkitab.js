@@ -4,7 +4,7 @@ import fs from "fs-extra";
 import path from "path";
 
 // Ganti versi & URL dasar di sini
-const VERSION = "TB";
+const VERSION = "amd";
 const BASE_URL = `https://alkitab.mobi/${VERSION}/`;
 
 const daftarKitab = [
